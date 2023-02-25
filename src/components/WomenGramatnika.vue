@@ -3,33 +3,33 @@
     <section class="women-banner spad">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12 mt-5">
+                <div class="col-lg-12 mt-5" v-if="slides.length > 0">
                     <carousel class="product-slider" :pauseAutoplayOnHover="true" :autoplay="3000" :wrap-around="true"
-                        :transition="1500" :items-to-show="3">
+                        :transition="1500" :items-to-show="1">
                         <slide v-for="slide in slides" :key="slide.id">
 
-                            <div class="product-item">
+                            <div class="product-item" v-for="itemProduct in slides" v-bind:key="itemProduct.id">
                                 <div class="pi-pic">
-                                    <img :src=slide.img alt="" />
+                                    <img v-bind:src="itemProduct.galleries[0].photo" alt="" />
                                     <ul>
                                         <li class="w-icon active">
                                             <a href="#"><i class="icon_bag_alt"></i></a>
                                         </li>
                                         <li class="quick-view">
-                                            <router-link to="/product">
+                                            <router-link v-bind:to="'/product/'+itemProduct.id">
                                                 + Quick View
                                             </router-link>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="pi-text">
-                                    <div class="catagory-name">Coat</div>
+                                    <div class="catagory-name">{{itemProduct.type}}</div>
                                     <router-link to="/product">
-                                        <h5>Mickey Baggy</h5>
+                                        <h5>{{itemProduct.name}}</h5>
                                     </router-link>
                                     <div class="product-price">
-                                        $14.00
-                                        <span>$35.00</span>
+                                        {{itemProduct.price}}
+                                        <span>Rp.400000</span>
                                     </div>
                                 </div>
                             </div>
@@ -41,6 +41,13 @@
                         </template>
                     </carousel>
                 </div>
+
+                <div class="col-lg-12" v-else>
+                    <p>
+                        Produk terbaru belum tersedia untuk saat ini.
+                    </p>
+                </div>
+
             </div>
         </div>
     </section>
@@ -50,6 +57,8 @@
 <script>
 // @ is an alias to /src
 import 'vue3-carousel/dist/carousel.css'
+import axios from 'axios';
+
 import {
     Carousel,
     Slide,
@@ -68,25 +77,14 @@ export default defineComponent({
     },
     data: function () {
         return {
-            slides: [
-                {
-                    id: 1,
-                    img: "img/mickey1.jpg"
-                },
-                {
-                    id: 2,
-                    img: "img/products/women-2.jpg"
-                },
-                {
-                    id: 3,
-                    img: "img/products/women-3.jpg"
-                },
-                {
-                    id: 4,
-                    img: "img/products/women-4.jpg"
-                },
-            ]
+            slides: []
         };
+    },
+    mounted(){
+        axios
+        .get("http://127.0.0.1:8000/api/products")
+        .then(res => (this.slides = res.data.data.data))
+        .catch(err => console.log(err));
     }
 });
 
