@@ -9,29 +9,34 @@
                         <slide v-for="slide in slides" :key="slide.id">
 
                             <div class="product-item" v-for="itemProduct in slides" v-bind:key="itemProduct.id">
-                                <div class="pi-pic">
-                                    <img v-bind:src="itemProduct.galleries[0].photo" alt="" />
-                                    <ul>
-                                        <li class="w-icon active">
-                                            <a href="#"><i class="icon_bag_alt"></i></a>
-                                        </li>
-                                        <li class="quick-view">
-                                            <router-link v-bind:to="'/product/'+itemProduct.id">
+                                <router-link v-bind:to="'/productView/' + itemProduct.id">
+                                    <div class="pi-pic">
+                                        <img v-bind:src="itemProduct.galleries[0].photo" alt="" />
+                                        <ul>
+                                            <li @click="
+                                                saveKeranjang(
+                                                    itemProduct.id,
+                                                    itemProduct.name,
+                                                    itemProduct.price,
+                                                    itemProduct.galleries[0].photo)" class="w-icon active">
+                                                <a href="#">
+                                                    <i class="icon_bag_alt"></i>
+                                                </a>
+                                            </li>
+                                            <li class="quick-view">
                                                 + Quick View
-                                            </router-link>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="pi-text">
-                                    <div class="catagory-name">{{itemProduct.type}}</div>
-                                    <router-link to="/product">
-                                        <h5>{{itemProduct.name}}</h5>
-                                    </router-link>
-                                    <div class="product-price">
-                                        {{itemProduct.price}}
-                                        <span>Rp.400000</span>
+                                            </li>
+                                        </ul>
                                     </div>
-                                </div>
+                                    <div class="pi-text">
+                                        <div class="catagory-name">{{ itemProduct.type }}</div>
+                                        <h5>{{ itemProduct.name }}</h5>
+                                        <div class="product-price">
+                                            {{ itemProduct.price }}
+                                            <span>Rp.400000</span>
+                                        </div>
+                                    </div>
+                                </router-link>
                             </div>
 
                         </slide>
@@ -77,20 +82,44 @@ export default defineComponent({
     },
     data: function () {
         return {
-            slides: []
+            slides: [],
+            keranjangUser: []
         };
     },
-    mounted(){
+    mounted() {
+        if (localStorage.getItem("keranjangUser")) {
+            try {
+                this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+            } catch (e) {
+                localStorage.removeItem("keranjangUser");
+            }
+        }
         axios
-        .get("http://127.0.0.1:8000/api/products")
-        .then(res => (this.slides = res.data.data.data))
-        .catch(err => console.log(err));
+            .get("http://127.0.0.1:8000/api/products")
+            .then(res => (this.slides = res.data.data.data))
+            .catch(err => console.log(err));
+    },
+    methods: {
+        saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {
+            var productStored = {
+                id: idProduct,
+                name: nameProduct,
+                price: priceProduct,
+                photo: photoProduct
+            };
+
+            this.keranjangUser.push(productStored);
+            const parsed = JSON.stringify(this.keranjangUser);
+            localStorage.setItem('keranjangUser', parsed);
+
+            window.location.reload();
+        }
     }
 });
 
 </script>
 
-<style>
+<style scoped>
 .product-item {
     width: 100%;
     height: 500px;

@@ -37,16 +37,16 @@
                                 Keranjang Belanja &nbsp;
                                 <a href="#">
                                     <i class="icon_bag_alt"></i>
-                                    <span>{{ keranjang.length }}</span>
+                                    <span>{{ keranjangUser.length }}</span>
                                 </a>
                                 <div class="cart-hover">
                                     <div class="select-items">
                                         <table>
-                                            <tbody>
+                                            <tbody v-if="keranjangUser.length > 0">
 
                                                 <tr v-for="keranjang in keranjangUser" :key="keranjang.id">
                                                     <td class="si-pic">
-                                                        <img :src="keranjang.photo" alt="" />
+                                                        <img class="photo-item" :src="keranjang.photo" alt="" />
                                                     </td>
                                                     <td class="si-text">
                                                         <div class="product-selected">
@@ -54,11 +54,16 @@
                                                             <h6>{{ keranjang.name }}</h6>
                                                         </div>
                                                     </td>
-                                                    <td class="si-close">
+                                                    <td @click="removeItem(keranjang.id)" class="si-close">
                                                         <i class="ti-close"></i>
                                                     </td>
                                                 </tr>
 
+                                            </tbody>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Keranjang Anda masih kosong</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -91,7 +96,25 @@ export default defineComponent({
             keranjangUser: [],
         };
     },
-    mouted() {
+    methods: {
+        // hapus item dari local storage
+        removeItem(idx) {
+
+            // cari tahu 'id' dari si item yg akan dihapus
+            let keranjangUserStorage = JSON.parse(localStorage.getItem("keranjangUser"));
+            let itemkeranjangUserStorage = keranjangUserStorage.map(itemkeranjangUserStorage => itemkeranjangUserStorage.id);
+
+            // cocokan 'idx' item dengan 'id' yg ada di storage
+            let index = itemkeranjangUserStorage.findIndex(id => id == idx);
+            this.keranjangUser.splice(index, 1);
+
+            // menyimpan kondisi terbaru ketika dihapus
+            const parsed = JSON.stringify(this.keranjangUser);
+            localStorage.setItem('keranjangUser', parsed);
+            window.location.reload();
+        }
+    },
+    mounted() {
         if (localStorage.getItem("keranjangUser")) {
             try {
                 this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
@@ -103,3 +126,10 @@ export default defineComponent({
 });
 
 </script>
+
+<style scoped>
+.photo-item {
+    width: 80px;
+    height: 80px;
+}
+</style>
