@@ -42,34 +42,7 @@ export default defineComponent({
         Pagination,
         // Navigation
     },
-    data: function () {
-        return {
-            slides: [
-                {
-                    id: 1,
-                    img: "img/logo-carousel/logo-1.png"
-                },
-                {
-                    id: 2,
-                    img: "img/logo-carousel/logo-2.png"
-                },
-                {
-                    id: 3,
-                    img: "img/logo-carousel/logo-3.png"
-                },
-                {
-                    id: 4,
-                    img: "img/logo-carousel/logo-4.png"
-                },
-                {
-                    id: 5,
-                    img: "img/logo-carousel/logo-5.png"
-                },
-            ]
-        };
-    }
 });
-
 </script>
 
 <style>

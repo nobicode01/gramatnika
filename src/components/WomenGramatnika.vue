@@ -24,7 +24,7 @@
                                                 </a>
                                             </li>
                                             <li class="quick-view">
-                                                + Quick View
+                                                <a href="#">+ Quick View</a>
                                             </li>
                                         </ul>
                                     </div>

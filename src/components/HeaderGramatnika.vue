@@ -18,10 +18,9 @@
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <div class="logo">
-                            <h1
-                                style="position: absolute; top: 10px; left:61px; z-index: 2; font-size:28px; font-weight: 700;">
+                            <h1 style="position: absolute; top: 10px; left:61px; font-size:28px;">
                                 Gramatnika</h1>
-                            <a href="./index.html" style="position: relative; z-index: 1; top: 0px;">
+                            <a href="./index.html" style="position: relative;">
                                 <img src="img/logo1.png" alt="" />
                             </a>
 
@@ -60,7 +59,7 @@
                                                 </tr>
 
                                             </tbody>
-                                            <tbody>
+                                            <tbody v-else>
                                                 <tr>
                                                     <td>Keranjang Anda masih kosong</td>
                                                 </tr>
@@ -69,10 +68,14 @@
                                     </div>
                                     <div class="select-total">
                                         <span>total:</span>
-                                        <h5>$120.00</h5>
+                                        <h5>${{ totalHarga }}</h5>
                                     </div>
                                     <div class="select-button">
-                                        <a href="#" class="primary-btn view-card">VIEW CARD</a>
+                                        <a href="#" class="primary-btn view-card">
+                                            <router-link to="/cart" style="color: #fff;">
+                                                VIEW CARD
+                                            </router-link>
+                                        </a>
                                         <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
                                     </div>
                                 </div>
@@ -121,6 +124,13 @@ export default defineComponent({
             } catch (e) {
                 localStorage.removeItem("keranjangUser");
             }
+        }
+    },
+    computed: {
+        totalHarga() {
+            return this.keranjangUser.reduce(function (items, data) {
+                return items + data.price;
+            }, 0);
         }
     }
 });

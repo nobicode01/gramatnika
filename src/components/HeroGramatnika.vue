@@ -1,8 +1,7 @@
 <template>
     <!-- Hero Section Begin -->
     <section class="hero-section">
-        <carousel :pauseAutoplayOnHover="true" :autoplay="3000" :wrap-around="true" :transition="1500"
-            :items-to-show="1">
+        <carousel :pauseAutoplayOnHover="true" :autoplay="3000" :wrap-around="true" :transition="1500" :items-to-show="1">
             <slide v-for="slide in slides" :key="slide.id">
 
                 <div class="single-hero-items set-bg" :style="slide.img_url">

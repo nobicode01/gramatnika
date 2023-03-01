@@ -6,7 +6,12 @@
                 <div class="col-lg-5">
                     <div class="footer-left text-left">
                         <div class="footer-logo">
-                            <a href="#"><img src="img/logo_website_gramatnika_white.png" alt="" /></a>
+                            <h1 style="position: absolute; top: -3px; left:61px; font-size:28px; color: #fff;">
+                                Gramatnika</h1>
+                            <a href="./index.html" style="position: relative;">
+                                <img src="img/logo1.png" alt="" />
+                            </a>
+                            <!-- <a href="#"><img src="img/logo1.png" alt="" /></a> -->
                         </div>
                         <ul>
                             <li>Address: Cinere Raya, Depok</li>
